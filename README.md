@@ -1,5 +1,5 @@
 <div align="center">
-    <img alt="chatblade.nvim banner" src=".github/chatblade.nvim.png" width="auto" height="100%">
+    <img alt="chatblade.nvim banner" src=".github/chatblade.nvim.png">
     <br>
     <p>
         <i>Leverage <a href="https://github.com/npiv/chatblade">Chatblade</a>, the Swiss Army Knife for ChatGPT, from your Neovim editor.</i>
