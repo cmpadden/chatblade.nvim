@@ -6,28 +6,55 @@
     </p>
 </div>
 
+## Setup
+
+### Prerequisites
+
+1. Install the [Chatblade](https://github.com/npiv/chatblade) CLI
+2. Set the `OPENAI_API_KEY` environment variable
+
+### Installation & Configuration
+
+```lua
+-- lazy.nvim
+{
+  "cmpadden/chatblade.nvim",
+  keys = {
+    { "<leader>x", ":Chatblade<cr>", mode = "v" },
+  },
+  opts = {
+    prompt  = "programmer", -- custom prompt: nil, 'programmer', 'explain', etc
+    raw     = true,         -- print session as pure text
+    extract = true,         -- extract content from response if possible (either json or code)
+    only    = true,         -- only display the response, not the query
+  }
+}
+```
 
 ## Usage
 
-```lua
-chatblade = require('chatblade')
+### Bindings
 
-vim.api.nvim_create_user_command("Chatblade", _chatblade.run, { range = true })
+Select text, and send it to Chatblade with your key binding of choice. For the example
+of `<leader>x`, you can visually select a line or paragraph, send it to Chatblade, and
+the response will be inserted below your cursor.
 
-vim.keymap.set("v", "<leader>x", ":Chatblade<CR>", { silent = true })
-
-vim.api.nvim_create_user_command("ChatbladeStartSession", function(input)
-    _chatblade.start_session(input['args'])
-end, { nargs = 1, desc = "Activate Chatblade Session" })
-
-vim.api.nvim_create_user_command("ChatbladeStopSession", function()
-    _chatblade.stop_session()
-end, { nargs = 0, desc = "Deactivate Chatblade Session" })
-
-vim.api.nvim_create_user_command("ChatbladeDeleteSession", function(input)
-    _chatblade.delete_session(input['args'])
-end, { nargs = 1, desc = "Deactivate Chatblade Session" })
 ```
+vip<leader>x
+```
+
+### Commands
+
+The following user commands have been made available. This allows you to handle sessions
+so that you can send snippets to Chatblade, and ask follow-up questions with persisted
+context.
+
+| Command                | Description                                 |
+| ---------------------- | ------------------------------------------- |
+| Chatblade              | Send visual selection to Chatblade          |
+| ChatbladeStartSession  | Start a session to persist context          |
+| ChatbladeStopSession   | Stop the currently active Chatblade session |
+| ChatbladeDeleteSession | Delete the specified Chatblade session      |
 
 ## Motivation
 
@@ -41,4 +68,4 @@ However, _chatblade.nvim_ offers some quality of life improvements over such a b
 
 - Editor based sessions
 - Flexible configuration and prompt management
-- **[todo]** Metadata and file information injection 
+- **[todo]** Pass metadata and file information in prompt

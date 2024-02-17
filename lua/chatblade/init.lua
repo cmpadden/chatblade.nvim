@@ -95,6 +95,27 @@ function M.delete_session(session_name)
     print(stdout)
 end
 
+
+M.setup = function(opts)
+
+    opts = opts or {}
+
+    vim.api.nvim_create_user_command("Chatblade", M.run, { range = true })
+
+    vim.api.nvim_create_user_command("ChatbladeStartSession", function(input)
+        M.start_session(input['args'])
+    end, { nargs = 1, desc = "Activate Chatblade Session" })
+
+    vim.api.nvim_create_user_command("ChatbladeStopSession", function()
+        M.stop_session()
+    end, { nargs = 0, desc = "Deactivate Chatblade Session" })
+
+    vim.api.nvim_create_user_command("ChatbladeDeleteSession", function(input)
+        M.delete_session(input['args'])
+    end, { nargs = 1, desc = "Deactivate Chatblade Session" })
+
+end
+
 function M.run(user_config)
     print('Awaiting response...')
     local config = M.default_config
