@@ -1,27 +1,12 @@
 --[[ Chatblade.nvim
 
-BACKGROUND
-
-    The `chatblade.nvim` plugin provides a barebones wrapper around the `chatblade`
-    command line utility. It's easy to call out to `chatblade` without the need for
-    YAP (yet-another-plugin), however, this plugin aims to add a few quality of life
-    improvements, and possible configurations over that. If you would prefer to _not_
-    use a plugin, you may find the following binding helpful:
-
-        vim.keymap.set("v", "<leader>c", ':!chatblade -e -r<CR>')
-
-PREREQUISITES
-
-    - Install the `chatblade` CLI
-    - Set the `OPENAI_API_KEY` environment variable
-
-FEATURE TRACKING
+TODO LIST
 
     - [ ] explore `line1`, `line2` and `rows` available in `params` in `nvim_create_user_command`
     - [ ] handle creation of prompt files
     - [x] handle sessions
     - [ ] include filetype information in the prompt
-    - [ ] Default to randomly generated session
+    - [ ] Default to randomly generated session strings
 ]]
 --
 
@@ -95,15 +80,16 @@ function M.delete_session(session_name)
     print(stdout)
 end
 
-
 M.setup = function(opts)
-
     opts = opts or {}
+
+    -- merge user options w/ default configuration, overwriting defaults
+    M.config = vim.tbl_deep_extend("force", M.default_config, opts)
 
     vim.api.nvim_create_user_command("Chatblade", M.run, { range = true })
 
     vim.api.nvim_create_user_command("ChatbladeStartSession", function(input)
-        M.start_session(input['args'])
+        M.start_session(input["args"])
     end, { nargs = 1, desc = "Activate Chatblade Session" })
 
     vim.api.nvim_create_user_command("ChatbladeStopSession", function()
@@ -111,17 +97,12 @@ M.setup = function(opts)
     end, { nargs = 0, desc = "Deactivate Chatblade Session" })
 
     vim.api.nvim_create_user_command("ChatbladeDeleteSession", function(input)
-        M.delete_session(input['args'])
+        M.delete_session(input["args"])
     end, { nargs = 1, desc = "Deactivate Chatblade Session" })
-
 end
 
-function M.run(user_config)
-    print('Awaiting response...')
-    local config = M.default_config
-    if user_config then
-        config = vim.tbl_deep_extend("force", user_config, M.default_config)
-    end
+function M.run()
+    print("Awaiting response...")
 
     local srow, scol, erow, ecol = get_visual_selection_indexes()
 
@@ -138,11 +119,11 @@ function M.run(user_config)
         print(string.format("using session %s", M.active_session))
     end
 
-    if config.raw then
+    if M.config.raw then
         table.insert(command, "--raw")
     end
 
-    if config.extract then
+    if M.config.extract then
         table.insert(command, "--extract")
     end
 
@@ -152,9 +133,9 @@ function M.run(user_config)
     -- first call to a session, even if that session was created outside of the context
     -- of Neovim.
 
-    if config.prompt and not M.active_session then
+    if M.config.prompt and not M.active_session then
         table.insert(command, "--prompt-file")
-        table.insert(command, config.prompt)
+        table.insert(command, M.config.prompt)
     end
 
     local stdout = vim.fn.systemlist(command, selected_lines)
