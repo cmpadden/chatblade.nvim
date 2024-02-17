@@ -1,0 +1,2 @@
+install:
+	pre-commit install

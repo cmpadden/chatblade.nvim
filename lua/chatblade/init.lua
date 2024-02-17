@@ -11,7 +11,7 @@ TODO LIST
 --
 
 local M = {
-    active_session = nil,
+  active_session = nil,
 }
 
 -- Lua 5.1 backwards compatibility
@@ -25,9 +25,9 @@ unpack = unpack or table.unpack
 -- Gets row and column indexes for a visual selection.
 -- @return array of start and end indexes for selected lines
 local function get_visual_selection_indexes()
-    local srow, scol = unpack(vim.fn.getpos("'<"), 2)
-    local erow, ecol = unpack(vim.fn.getpos("'>"), 2)
-    return srow, scol, erow, ecol
+  local srow, scol = unpack(vim.fn.getpos("'<"), 2)
+  local erow, ecol = unpack(vim.fn.getpos("'>"), 2)
+  return srow, scol, erow, ecol
 end
 
 -- Gets text in current buffer given selection indexes.
@@ -36,20 +36,20 @@ end
 -- @param erow index of visual end row
 -- @param ecol index of visual end column
 local function get_visual_selection(srow, scol, erow, ecol)
-    local lines = vim.api.nvim_buf_get_lines(0, srow - 1, erow, false)
-    if #lines == 0 then
-        return nil
-    end
-    lines[1] = string.sub(lines[1], scol)
-    lines[#lines] = string.sub(lines[#lines], 1, ecol)
-    return lines
+  local lines = vim.api.nvim_buf_get_lines(0, srow - 1, erow, false)
+  if #lines == 0 then
+    return nil
+  end
+  lines[1] = string.sub(lines[1], scol)
+  lines[#lines] = string.sub(lines[#lines], 1, ecol)
+  return lines
 end
 
 -- Puts array of lines below specified `line_number`.
 -- @param line_number line to place text below
 -- @param lines array of strings to place into buffer
 local function put_lines_below_line(line_number, lines)
-    vim.api.nvim_buf_set_lines(0, line_number, line_number, true, lines)
+  vim.api.nvim_buf_set_lines(0, line_number, line_number, true, lines)
 end
 
 ----------------------------------------------------------------------------------------
@@ -65,82 +65,82 @@ M.default_config = {
 }
 
 function M.start_session(session_name)
-    M.active_session = session_name
-    print(string.format("Activated session %s!", session_name))
+  M.active_session = session_name
+  print(string.format("Activated session %s!", session_name))
 end
 
 function M.stop_session(session_name)
-    M.active_session = nil
-    print(string.format("Deactivated session %s!", session_name))
+  M.active_session = nil
+  print(string.format("Deactivated session %s!", session_name))
 end
 
 function M.delete_session(session_name)
-    M.active_session = nil
-    local stdout = vim.fn.system({ "chatblade", "--session-delete", session_name })
-    print(stdout)
+  M.active_session = nil
+  local stdout = vim.fn.system({ "chatblade", "--session-delete", session_name })
+  print(stdout)
 end
 
 M.setup = function(opts)
-    opts = opts or {}
+  opts = opts or {}
 
-    -- merge user options w/ default configuration, overwriting defaults
-    M.config = vim.tbl_deep_extend("force", M.default_config, opts)
+  -- merge user options w/ default configuration, overwriting defaults
+  M.config = vim.tbl_deep_extend("force", M.default_config, opts)
 
-    vim.api.nvim_create_user_command("Chatblade", M.run, { range = true })
+  vim.api.nvim_create_user_command("Chatblade", M.run, { range = true })
 
-    vim.api.nvim_create_user_command("ChatbladeStartSession", function(input)
-        M.start_session(input["args"])
-    end, { nargs = 1, desc = "Activate Chatblade Session" })
+  vim.api.nvim_create_user_command("ChatbladeStartSession", function(input)
+    M.start_session(input["args"])
+  end, { nargs = 1, desc = "Activate Chatblade Session" })
 
-    vim.api.nvim_create_user_command("ChatbladeStopSession", function()
-        M.stop_session()
-    end, { nargs = 0, desc = "Deactivate Chatblade Session" })
+  vim.api.nvim_create_user_command("ChatbladeStopSession", function()
+    M.stop_session()
+  end, { nargs = 0, desc = "Deactivate Chatblade Session" })
 
-    vim.api.nvim_create_user_command("ChatbladeDeleteSession", function(input)
-        M.delete_session(input["args"])
-    end, { nargs = 1, desc = "Deactivate Chatblade Session" })
+  vim.api.nvim_create_user_command("ChatbladeDeleteSession", function(input)
+    M.delete_session(input["args"])
+  end, { nargs = 1, desc = "Deactivate Chatblade Session" })
 end
 
 function M.run()
-    print("Awaiting response...")
+  print("Awaiting response...")
 
-    local srow, scol, erow, ecol = get_visual_selection_indexes()
+  local srow, scol, erow, ecol = get_visual_selection_indexes()
 
-    local selected_lines = get_visual_selection(srow, scol, erow, ecol)
-    if not selected_lines then
-        return
-    end
+  local selected_lines = get_visual_selection(srow, scol, erow, ecol)
+  if not selected_lines then
+    return
+  end
 
-    local command = { "chatblade" }
+  local command = { "chatblade" }
 
-    if M.active_session then
-        table.insert(command, "--session")
-        table.insert(command, M.active_session)
-        print(string.format("using session %s", M.active_session))
-    end
+  if M.active_session then
+    table.insert(command, "--session")
+    table.insert(command, M.active_session)
+    print(string.format("using session %s", M.active_session))
+  end
 
-    if M.config.raw then
-        table.insert(command, "--raw")
-    end
+  if M.config.raw then
+    table.insert(command, "--raw")
+  end
 
-    if M.config.extract then
-        table.insert(command, "--extract")
-    end
+  if M.config.extract then
+    table.insert(command, "--extract")
+  end
 
-    -- NOTE: we currently do not send the prompt if a session is active. This is because
-    -- an error is thrown if a prompt is used _after_ a session has already been called
-    -- with a given prompt. We need to determine how to only pass the prompt on the
-    -- first call to a session, even if that session was created outside of the context
-    -- of Neovim.
+  -- NOTE: we currently do not send the prompt if a session is active. This is because
+  -- an error is thrown if a prompt is used _after_ a session has already been called
+  -- with a given prompt. We need to determine how to only pass the prompt on the
+  -- first call to a session, even if that session was created outside of the context
+  -- of Neovim.
 
-    if M.config.prompt and not M.active_session then
-        table.insert(command, "--prompt-file")
-        table.insert(command, M.config.prompt)
-    end
+  if M.config.prompt and not M.active_session then
+    table.insert(command, "--prompt-file")
+    table.insert(command, M.config.prompt)
+  end
 
-    local stdout = vim.fn.systemlist(command, selected_lines)
+  local stdout = vim.fn.systemlist(command, selected_lines)
 
-    put_lines_below_line(erow, stdout)
+  put_lines_below_line(erow, stdout)
 end
 
 return M
