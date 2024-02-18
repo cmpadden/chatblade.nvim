@@ -58,10 +58,10 @@ end
 
 -- stylua: ignore
 M.default_config = {
-    prompt  = "programmer", -- custom prompts: nil, 'programmer', 'explain'
-    raw     = true,         -- print session as pure text
-    extract = true,         -- extract content from response if possible (either json or code)
-    only    = true,         -- only display the response, not the query
+    prompt  = nil,    -- custom prompts: nil, 'programmer', 'explain'
+    raw     = true,   -- print session as pure text
+    extract = true,   -- extract content from response if possible (either json or code)
+    only    = true,   -- only display the response, not the query
 }
 
 function M.start_session(session_name)

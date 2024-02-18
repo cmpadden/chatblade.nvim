@@ -29,7 +29,7 @@
     "ChatbladeDeleteSession",
   },
   opts = {
-    prompt  = "programmer", -- custom prompt: nil, 'programmer', 'explain', etc
+    prompt  = "programmer", -- requires `~/.config/chatblade/programmer` in filesystem
     raw     = true,         -- print session as pure text
     extract = true,         -- extract content from response if possible (either json or code)
     only    = true,         -- only display the response, not the query
