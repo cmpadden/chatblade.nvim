@@ -29,7 +29,7 @@
     "ChatbladeDeleteSession",
   },
   opts = {
-    prompt  = "programmer", -- requires `~/.config/chatblade/programmer` in filesystem
+    prompt  = "programmer", -- file stored at `~/.config/chatblade/programmer`
     raw     = true,         -- print session as pure text
     extract = true,         -- extract content from response if possible (either json or code)
     only    = true,         -- only display the response, not the query
@@ -55,12 +55,21 @@ The following user commands have been made available. This allows you to handle 
 so that you can send snippets to Chatblade, and ask follow-up questions with persisted
 context.
 
-| Command                | Description                                 |
-| ---------------------- | ------------------------------------------- |
-| Chatblade              | Send visual selection to Chatblade          |
-| ChatbladeStartSession  | Start a session to persist context          |
-| ChatbladeStopSession   | Stop the currently active Chatblade session |
-| ChatbladeDeleteSession | Delete the specified Chatblade session      |
+| Command                | Parameters | Description                                 |
+| ---------------------- | --------- | ------------------------------------------- |
+| Chatblade              | `nil`     | Send visual selection to Chatblade          |
+| ChatbladeStartSession  | `string`  | Start a session to persist context          |
+| ChatbladeStopSession   | `nil`     | Stop the currently active Chatblade session |
+| ChatbladeDeleteSession | `string`  | Delete the specified Chatblade session      |
+
+### Options
+
+| Property    | Type       | Description                                                                |
+| ----------- | ---------- | -------------------------------------------------------------------------- |
+| **prompt**  | `string?`  | Prompt to use found in the `~/.config/chatblade` directory (Default `nil`) |
+| **raw**     | `boolean?` | Whether to return results in pure text (Default `true`)                    |
+| **extract** | `boolean?` | Whether to extract code from response (Default `true`)                     |
+| **only**    | `boolean?` | Only display the response, not the original query (Default `true`)         |
 
 ## Motivation
 
