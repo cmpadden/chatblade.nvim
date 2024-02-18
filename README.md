@@ -22,6 +22,12 @@
   keys = {
     { "<leader>x", ":Chatblade<cr>", mode = "v" },
   },
+  cmd = {
+    "Chatblade",
+    "ChatbladeStartSession",
+    "ChatbladeStopSession",
+    "ChatbladeDeleteSession",
+  },
   opts = {
     prompt  = "programmer", -- custom prompt: nil, 'programmer', 'explain', etc
     raw     = true,         -- print session as pure text
