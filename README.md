@@ -24,9 +24,9 @@
   },
   cmd = {
     "Chatblade",
-    "ChatbladeStartSession",
-    "ChatbladeStopSession",
-    "ChatbladeDeleteSession",
+    "ChatbladeSessionStart",
+    "ChatbladeSessionStop",
+    "ChatbladeSessionDelete",
   },
   opts = {
     prompt  = "programmer", -- file stored at `~/.config/chatblade/programmer`
@@ -58,9 +58,9 @@ context.
 | Command                | Parameters | Description                                 |
 | ---------------------- | --------- | ------------------------------------------- |
 | Chatblade              | `nil`     | Send visual selection to Chatblade          |
-| ChatbladeStartSession  | `string`  | Start a session to persist context          |
-| ChatbladeStopSession   | `nil`     | Stop the currently active Chatblade session |
-| ChatbladeDeleteSession | `string`  | Delete the specified Chatblade session      |
+| ChatbladeSessionStart  | `string`  | Start a session to persist context          |
+| ChatbladeSessionStop   | `nil`     | Stop the currently active Chatblade session |
+| ChatbladeSessionDelete | `string`  | Delete the specified Chatblade session      |
 
 ### Options
 

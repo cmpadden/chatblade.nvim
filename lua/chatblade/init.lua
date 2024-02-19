@@ -88,15 +88,15 @@ M.setup = function(opts)
 
   vim.api.nvim_create_user_command("Chatblade", M.run, { range = true })
 
-  vim.api.nvim_create_user_command("ChatbladeStartSession", function(input)
+  vim.api.nvim_create_user_command("ChatbladeSessionStart", function(input)
     M.start_session(input["args"])
   end, { nargs = 1, desc = "Activate Chatblade Session" })
 
-  vim.api.nvim_create_user_command("ChatbladeStopSession", function()
+  vim.api.nvim_create_user_command("ChatbladeSessionStop", function()
     M.stop_session()
   end, { nargs = 0, desc = "Deactivate Chatblade Session" })
 
-  vim.api.nvim_create_user_command("ChatbladeDeleteSession", function(input)
+  vim.api.nvim_create_user_command("ChatbladeSessionDelete", function(input)
     M.delete_session(input["args"])
   end, { nargs = 1, desc = "Deactivate Chatblade Session" })
 end
