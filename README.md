@@ -64,12 +64,13 @@ context.
 
 ### Options
 
-| Property    | Type       | Description                                                                |
-| ----------- | ---------- | -------------------------------------------------------------------------- |
-| **prompt**  | `string?`  | Prompt to use found in the `~/.config/chatblade` directory (Default `nil`) |
-| **raw**     | `boolean?` | Whether to return results in pure text (Default `true`)                    |
-| **extract** | `boolean?` | Whether to extract code from response (Default `true`)                     |
-| **only**    | `boolean?` | Only display the response, not the original query (Default `true`)         |
+| Property           | Type       | Description                                                                                                |
+| ------------------ | ---------- | ---------------------------------------------------------------------------------------------------------- |
+| **prompt**         | `string?`  | Prompt to use found in the `~/.config/chatblade` directory (Default `nil`)                                 |
+| **raw**            | `boolean?` | Whether to return results in pure text (Default `true`)                                                    |
+| **extract**        | `boolean?` | Whether to extract code from response (Default `true`)                                                     |
+| **only**           | `boolean?` | Only display the response, not the original query (Default `true`)                                         |
+| **temperature**    | `float?`   | Lower values for result in more consistent outputs, whereas higher is more creative (Default 0.0; Max 2.0) |
 
 ## Motivation
 

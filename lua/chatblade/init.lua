@@ -58,10 +58,11 @@ end
 
 -- stylua: ignore
 M.default_config = {
-    prompt  = nil,    -- custom prompts: nil, 'programmer', 'explain'
-    raw     = true,   -- print session as pure text
-    extract = true,   -- extract content from response if possible (either json or code)
-    only    = true,   -- only display the response, not the query
+    prompt      = nil,   -- custom prompts: nil, 'programmer', 'explain'
+    raw         = true,  -- print session as pure text
+    extract     = true,  -- extract content from response if possible (either json or code)
+    only        = true,  -- only display the response, not the query
+    temperature = 0.8,   -- float value from 0.0 to 2.0
 }
 
 function M.start_session(session_name)
@@ -113,6 +114,11 @@ function M.run()
   end
 
   local command = { "chatblade" }
+
+  if M.config.temperature then
+    table.insert(command, "--temperature")
+    table.insert(command, tostring(M.config.temperature))
+  end
 
   if M.active_session then
     table.insert(command, "--session")
