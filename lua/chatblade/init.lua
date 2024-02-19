@@ -76,7 +76,8 @@ end
 
 function M.delete_session(session_name)
   M.active_session = nil
-  local stdout = vim.fn.system({ "chatblade", "--session-delete", session_name })
+  local stdout =
+    vim.fn.system({ "chatblade", "--session-delete", "--session", session_name })
   print(stdout)
 end
 
