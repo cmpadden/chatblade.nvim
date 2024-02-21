@@ -91,13 +91,7 @@ M.setup = function(opts)
   -- merge user options w/ default configuration, overwriting defaults
   M.config = vim.tbl_deep_extend("force", M.default_config, opts)
 
-  vim.api.nvim_create_user_command("Chatblade", M.run, { nargs = 0, range = true })
-
-  vim.api.nvim_create_user_command("ChatbladeQuery", function(input)
-    if string.len(input.args) == 0 then
-      print("Please provide a query when using `ChatbladeQuery`")
-      return
-    end
+  vim.api.nvim_create_user_command("Chatblade", function(input)
     M.run(input.args)
   end, { nargs = "*", range = true })
 
