@@ -24,6 +24,7 @@
   },
   cmd = {
     "Chatblade",
+    "ChatbladeQuery",
     "ChatbladeSessionStart",
     "ChatbladeSessionStop",
     "ChatbladeSessionDelete",
@@ -55,12 +56,13 @@ The following user commands have been made available. This allows you to handle 
 so that you can send snippets to Chatblade, and ask follow-up questions with persisted
 context.
 
-| Command                | Parameters | Description                                 |
-| ---------------------- | --------- | ------------------------------------------- |
-| Chatblade              | `nil`     | Send visual selection to Chatblade          |
-| ChatbladeSessionStart  | `string`  | Start a session to persist context          |
-| ChatbladeSessionStop   | `nil`     | Stop the currently active Chatblade session |
-| ChatbladeSessionDelete | `string`  | Delete the specified Chatblade session      |
+| Command                | Parameters | Description                                             |
+| ---------------------- | --------- | -------------------------------------------------------- |
+| Chatblade              | `nil`     | Send visual selection to Chatblade                       |
+| ChatbladeQuery         | `string`  | Send visual selection to Chatblade with additional query |
+| ChatbladeSessionStart  | `string`  | Start a session to persist context                       |
+| ChatbladeSessionStop   | `nil`     | Stop the currently active Chatblade session              |
+| ChatbladeSessionDelete | `string`  | Delete the specified Chatblade session                   |
 
 ### Options
 

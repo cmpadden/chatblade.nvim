@@ -7,6 +7,9 @@ TODO LIST
     - [x] handle sessions
     - [ ] include filetype information in the prompt
     - [ ] Default to randomly generated session strings
+
+    - [ ] Enter prompt in command itself
+    - [ ] Don't automatically send selection as prompt, allow for enter of additional text
 ]]
 --
 
@@ -88,7 +91,15 @@ M.setup = function(opts)
   -- merge user options w/ default configuration, overwriting defaults
   M.config = vim.tbl_deep_extend("force", M.default_config, opts)
 
-  vim.api.nvim_create_user_command("Chatblade", M.run, { range = true })
+  vim.api.nvim_create_user_command("Chatblade", M.run, { nargs = 0, range = true })
+
+  vim.api.nvim_create_user_command("ChatbladeQuery", function(input)
+    if string.len(input.args) == 0 then
+      print("Please provide a query when using `ChatbladeQuery`")
+      return
+    end
+    M.run(input.args)
+  end, { nargs = "*", range = true })
 
   vim.api.nvim_create_user_command("ChatbladeSessionStart", function(input)
     M.start_session(input["args"])
@@ -103,14 +114,25 @@ M.setup = function(opts)
   end, { nargs = 1, desc = "Deactivate Chatblade Session" })
 end
 
-function M.run()
+function M.run(optional_query)
   print("Awaiting response...")
+
+  local query = {}
+
+  if optional_query then
+    table.insert(query, optional_query)
+  end
 
   local srow, scol, erow, ecol = get_visual_selection_indexes()
 
   local selected_lines = get_visual_selection(srow, scol, erow, ecol)
   if not selected_lines then
     return
+  end
+
+  -- concatenate optional query with visual selection
+  for _, v in ipairs(selected_lines) do
+    table.insert(query, v)
   end
 
   local command = { "chatblade" }
@@ -145,7 +167,7 @@ function M.run()
     table.insert(command, M.config.prompt)
   end
 
-  local stdout = vim.fn.systemlist(command, selected_lines)
+  local stdout = vim.fn.systemlist(command, query)
 
   put_lines_below_line(erow, stdout)
 end
