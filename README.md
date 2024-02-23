@@ -74,18 +74,14 @@ context.
 
 ## Motivation
 
-If all you seek is to pass text to `chatblade` from your Neovim session, then there is no need to introduce yet another plugin. Simply add a binding like so:
+If all you wish to do is to pass text to `chatblade` from your Neovim session, then you may be better off defining a key binding like so:
 
 ```lua
 vim.keymap.set("v", "<leader>x", ':!chatblade -e -r<CR>')
 ```
 
-However, _chatblade.nvim_ offers some quality of life improvements over such a bindings.
+However, _chatblade.nvim_ intends to offers some quality of life improvements over such a bindings.
 
-## Tasks
-
-- Editor based sessions
-- Flexible configuration and prompt management
-- Inject file information in prompt
-- Support placing response as comment using filetype comment character
-- Handle creation of prompt files
+<div align="center">
+    <img src=".github/fire.svg" height="25" width="25">
+</div>
