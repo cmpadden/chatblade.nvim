@@ -25,26 +25,17 @@ unpack = unpack or table.unpack
 --                                       Utils                                        --
 ----------------------------------------------------------------------------------------
 
--- Gets row and column indexes for a visual selection.
--- @return array of start and end indexes for selected lines
-local function get_visual_selection_indexes()
-  local srow, scol = unpack(vim.fn.getpos("'<"), 2)
-  local erow, ecol = unpack(vim.fn.getpos("'>"), 2)
-  return srow, scol, erow, ecol
-end
-
 -- Gets text in current buffer given selection indexes.
--- @param srow index of visual start row
--- @param scol index of visual start column
--- @param erow index of visual end row
--- @param ecol index of visual end column
-local function get_visual_selection(srow, scol, erow, ecol)
+--
+-- Note: column based selection was removed, see Git history for this functionality.
+--
+-- @param srow line number of selection start
+-- @param erow line number of selection end
+local function get_lines(srow, erow)
   local lines = vim.api.nvim_buf_get_lines(0, srow - 1, erow, false)
   if #lines == 0 then
     return nil
   end
-  lines[1] = string.sub(lines[1], scol)
-  lines[#lines] = string.sub(lines[#lines], 1, ecol)
   return lines
 end
 
@@ -91,8 +82,20 @@ M.setup = function(opts)
   -- merge user options w/ default configuration, overwriting defaults
   M.config = vim.tbl_deep_extend("force", M.default_config, opts)
 
+  -- Use `input.range` to determine if a visual selection is present.
+  --
+  -- When performing a visual selection, use the line number of the end of the
+  -- selection (`input.line2`) as the `response_line_number` so that the response
+  -- will be placed below the selected text.
   vim.api.nvim_create_user_command("Chatblade", function(input)
-    M.run(input.args)
+    if input.range == 0 then
+      -- No visual selection
+      M.run(input.args, nil, input.line2)
+    else
+      -- Include visual selection as supplement text
+      local visual_selection = get_lines(input.line1, input.line2)
+      M.run(input.args, visual_selection, input.line2)
+    end
   end, { nargs = "*", range = true })
 
   vim.api.nvim_create_user_command("ChatbladeSessionStart", function(input)
@@ -108,8 +111,11 @@ M.setup = function(opts)
   end, { nargs = 1, desc = "Deactivate Chatblade Session" })
 end
 
-function M.run(optional_query)
-  print("Awaiting response...")
+function M.run(optional_query, optional_visual_selection, response_line_number)
+  if optional_query == nil and optional_visual_selection == nil then
+    print("Either a query or visual selection must be provided...")
+    return
+  end
 
   local query = {}
 
@@ -117,16 +123,10 @@ function M.run(optional_query)
     table.insert(query, optional_query)
   end
 
-  local srow, scol, erow, ecol = get_visual_selection_indexes()
-
-  local selected_lines = get_visual_selection(srow, scol, erow, ecol)
-  if not selected_lines then
-    return
-  end
-
-  -- concatenate optional query with visual selection
-  for _, v in ipairs(selected_lines) do
-    table.insert(query, v)
+  if optional_visual_selection then
+    for _, v in ipairs(optional_visual_selection) do
+      table.insert(query, v)
+    end
   end
 
   local command = { "chatblade" }
@@ -161,9 +161,11 @@ function M.run(optional_query)
     table.insert(command, M.config.prompt)
   end
 
+  print("Awaiting response...")
+
   local stdout = vim.fn.systemlist(command, query)
 
-  put_lines_below_line(erow, stdout)
+  put_lines_below_line(response_line_number, stdout)
 end
 
 return M

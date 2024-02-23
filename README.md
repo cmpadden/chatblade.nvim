@@ -55,12 +55,12 @@ The following user commands have been made available. This allows you to handle 
 so that you can send snippets to Chatblade, and ask follow-up questions with persisted
 context.
 
-| Command                | Parameters | Description                                              |
-| ---------------------- | --------- | --------------------------------------------------------- |
-| Chatblade              | `string?` | Send visual selection to Chatblade with an optional query |
-| ChatbladeSessionStart  | `string`  | Start a session to persist context                        |
-| ChatbladeSessionStop   | `nil`     | Stop the currently active Chatblade session               |
-| ChatbladeSessionDelete | `string`  | Delete the specified Chatblade session                    |
+| Command                | Parameters | Description                                                      |
+| ---------------------- | --------- | ----------------------------------------------------------------- |
+| Chatblade              | `string?` | Prompt Chatblade with visual selection and/or an additional query |
+| ChatbladeSessionStart  | `string`  | Start a session to persist context                                |
+| ChatbladeSessionStop   | `nil`     | Stop the currently active Chatblade session                       |
+| ChatbladeSessionDelete | `string`  | Delete the specified Chatblade session                            |
 
 ### Options
 
@@ -82,6 +82,9 @@ vim.keymap.set("v", "<leader>x", ':!chatblade -e -r<CR>')
 
 However, _chatblade.nvim_ offers some quality of life improvements over such a bindings.
 
+## Tasks
+
 - Editor based sessions
 - Flexible configuration and prompt management
-- **[todo]** Pass metadata and file information in prompt
+- Inject file information in prompt
+- Support placing response as comment using filetype comment character
