@@ -88,3 +88,4 @@ However, _chatblade.nvim_ offers some quality of life improvements over such a b
 - Flexible configuration and prompt management
 - Inject file information in prompt
 - Support placing response as comment using filetype comment character
+- Handle creation of prompt files
