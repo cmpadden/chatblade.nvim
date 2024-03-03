@@ -29,10 +29,12 @@
     "ChatbladeSessionDelete",
   },
   opts = {
-    prompt  = "programmer", -- file stored at `~/.config/chatblade/programmer`
-    raw     = true,         -- print session as pure text
-    extract = true,         -- extract content from response if possible (either json or code)
-    only    = true,         -- only display the response, not the query
+    prompt           = "programmer",
+    raw              = true,
+    extract          = true,
+    only             = true,
+    temperature      = 0.8,
+    include_filetype = true,
   }
 }
 ```
@@ -64,13 +66,14 @@ context.
 
 ### Options
 
-| Property           | Type       | Description                                                                                                |
-| ------------------ | ---------- | ---------------------------------------------------------------------------------------------------------- |
-| **prompt**         | `string?`  | Prompt to use found in the `~/.config/chatblade` directory (Default `nil`)                                 |
-| **raw**            | `boolean?` | Whether to return results in pure text (Default `true`)                                                    |
-| **extract**        | `boolean?` | Whether to extract code from response (Default `true`)                                                     |
-| **only**           | `boolean?` | Only display the response, not the original query (Default `true`)                                         |
-| **temperature**    | `float?`   | Lower values for result in more consistent outputs, whereas higher is more creative (Default 0.0; Max 2.0) |
+| Property             | Type       | Description                                                                                                |
+| -------------------- | ---------- | ---------------------------------------------------------------------------------------------------------- |
+| **prompt**           | `string?`  | Prompt to use found in the `~/.config/chatblade` directory (Default `nil`)                                 |
+| **raw**              | `boolean?` | Whether to return results in pure text (Default `true`)                                                    |
+| **extract**          | `boolean?` | Whether to extract code from response (Default `true`)                                                     |
+| **only**             | `boolean?` | Only display the response, not the original query (Default `true`)                                         |
+| **temperature**      | `float?`   | Lower values for result in more consistent outputs, whereas higher is more creative (Default 0.0; Max 2.0) |
+| **include_filetype** | `boolean?` | Include filetype metadata in the prompt from active buffer (`vim.bo.filetype`)                             |
 
 ## Motivation
 
@@ -80,7 +83,7 @@ If all you wish to do is to pass text to `chatblade` from your Neovim session, t
 vim.keymap.set("v", "<leader>x", ':!chatblade -e -r<CR>')
 ```
 
-However, _chatblade.nvim_ intends to offers some quality of life improvements over such a bindings.
+However, _chatblade.nvim_ intends to offer some quality of life improvements over such a bindings.
 
 <div align="center">
     <img src=".github/fire.svg" height="25" width="25">
