@@ -39,11 +39,12 @@ end
 
 -- stylua: ignore
 M.default_config = {
-    prompt      = nil,   -- custom prompts: nil, 'programmer', 'explain'
-    raw         = true,  -- print session as pure text
-    extract     = true,  -- extract content from response if possible (either json or code)
-    only        = true,  -- only display the response, not the query
-    temperature = 0.8,   -- float value from 0.0 to 2.0
+    prompt           = nil,   -- custom prompts: nil, 'programmer', 'explain'
+    raw              = true,  -- print session as pure text
+    extract          = true,  -- extract content from response if possible (either json or code)
+    only             = true,  -- only display the response, not the query
+    temperature      = 0.8,   -- float value from 0.0 to 2.0
+    include_filetype = true,  -- include filetype metadata in prompt
 }
 
 function M.start_session(session_name)
@@ -105,6 +106,10 @@ function M.run(optional_query, optional_visual_selection, response_line_number)
     end
 
     local query = {}
+
+    if M.config.include_filetype then
+        table.insert(query, "current filetype = " .. vim.bo.filetype)
+    end
 
     if optional_query then
         table.insert(query, optional_query)
