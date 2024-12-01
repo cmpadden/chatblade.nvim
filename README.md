@@ -29,12 +29,13 @@
     "ChatbladeSessionDelete",
   },
   opts = {
-    prompt           = "programmer",
-    raw              = true,
-    extract          = true,
-    only             = true,
-    temperature      = 0.8,
-    include_filetype = true,
+    prompt            = "programmer",
+    raw               = true,
+    extract           = true,
+    only              = true,
+    temperature       = 0.8,
+    include_filetype  = true,
+    insert_as_comment = true,
   }
 }
 ```
@@ -66,14 +67,15 @@ context.
 
 ### Options
 
-| Property             | Type       | Description                                                                                                |
-| -------------------- | ---------- | ---------------------------------------------------------------------------------------------------------- |
-| **prompt**           | `string?`  | Prompt to use found in the `~/.config/chatblade` directory (Default `nil`)                                 |
-| **raw**              | `boolean?` | Whether to return results in pure text (Default `true`)                                                    |
-| **extract**          | `boolean?` | Whether to extract code from response (Default `true`)                                                     |
-| **only**             | `boolean?` | Only display the response, not the original query (Default `true`)                                         |
-| **temperature**      | `float?`   | Lower values for result in more consistent outputs, whereas higher is more creative (Default 0.0; Max 2.0) |
-| **include_filetype** | `boolean?` | Include filetype metadata in the prompt from active buffer (`vim.bo.filetype`)                             |
+| Property              | Type       | Description                                                                                                |
+| --------------------- | ---------- | ---------------------------------------------------------------------------------------------------------- |
+| **prompt**            | `string?`  | Prompt to use found in the `~/.config/chatblade` directory (Default `nil`)                                 |
+| **raw**               | `boolean?` | Whether to return results in pure text (Default `true`)                                                    |
+| **extract**           | `boolean?` | Whether to extract code from response (Default `true`)                                                     |
+| **only**              | `boolean?` | Only display the response, not the original query (Default `true`)                                         |
+| **temperature**       | `float?`   | Lower values for result in more consistent outputs, whereas higher is more creative (Default 0.0; Max 2.0) |
+| **include_filetype**  | `boolean?` | Include filetype metadata in the prompt from active buffer (`vim.bo.filetype`)                             |
+| **insert_as_comment** | `boolean?` | Inserts response as a comment using the `commentstring` defined for the active filetype                    |
 
 ## Motivation
 
