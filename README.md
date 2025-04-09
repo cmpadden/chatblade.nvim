@@ -1,5 +1,5 @@
 <div align="center">
-    <img alt="chatblade.nvim banner" src=".github/llm.nvim.png">
+    <img alt="llm.nvim banner" src=".github/llm.nvim.png">
     <br>
     <p>
       <i>Leverage <a href="https://github.com/simonw/llm"><code>llm</code></a>, a CLI utility and Python library for interacting with Large Language Models, from your Neovim editor.</i>
